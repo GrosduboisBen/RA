@@ -4,13 +4,14 @@ import {
   Button,
   TextField,
   Form,
-  FormLayout
+  FormLayout,
+  Card
 } from "@shopify/polaris";
 
 
 
 export default function FormOnSubmitExample() {
-  
+
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
 
@@ -22,34 +23,34 @@ export default function FormOnSubmitExample() {
     setDate("");
     setTime("");
   }, []);
-   
+
   const handleDateChange = useCallback((value) => setDate(value), []);
   const handleTimeChange = useCallback((value) => setTime(value), []);
   return (
     <Layout>
-  <Layout.Section oneHalf>
-    <Form onSubmit={handleSubmitDate}>
-        <TextField
-          value={date}
-          onChange={handleDateChange}
-          label="Date"
-          type="date"
-        />
-         <Button submit>Submit</Button>
-        </Form></Layout.Section>
-        <Layout.Section oneHalf>
+      <Layout.Section oneHalf>
+        <Card title="Date">
+          <Form onSubmit={handleSubmitDate}>
+            <TextField
+              value={date}
+              onChange={handleDateChange}
+              type="date"
+            />
+          </Form>
+        </Card>
+      </Layout.Section>
+      <Layout.Section oneHalf>
+        <Card title ="Time">
         <Form onSubmit={handleSubmitTime}>
-        <TextField 
-          value={time}
-          onChange={handleTimeChange}
-          label="Time"
-          type="time"
-        />
+          <TextField
+            value={time}
+            onChange={handleTimeChange}
+            type="time"
+          />
+        </Form>
+        </Card>
+      </Layout.Section>
 
-        <Button submit>Submit</Button>
-    </Form>
-    </Layout.Section>
-    
     </Layout>
   );
 }

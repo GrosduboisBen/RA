@@ -26,14 +26,16 @@ class EditProduct extends React.Component {
         };
         return (
             <Page>
-                <Card>
-                    <Banner  title="Order archived">
-                    <Button onClick={redirectToHome}>Save</Button>
-                    </Banner>
-                </Card>
+                <Card  title="Set up your dates"
+                primaryFooterAction={{
+                    content : ' Save',
+                    onAction: () => redirectToHome()
+            }}>
+                    
+                
                 <FormOnSubmitExample>
                 </FormOnSubmitExample>
-                
+                </Card>
             </Page>
         );
     }
