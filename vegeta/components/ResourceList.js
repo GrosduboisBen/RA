@@ -40,6 +40,15 @@ const GET_PRODUCTS_BY_ID = gql`
       }
     }
   }
+`;const GET_STOCK_BY_ID = gql`
+query getLocations($ids: [ID!]!){ 
+  nodes(ids: $ids){
+    ... on Location{
+      id
+      name
+    }
+  }
+}
 `;
 
 class ResourceListWithProducts extends React.Component {

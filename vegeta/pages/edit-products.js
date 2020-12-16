@@ -1,55 +1,41 @@
 import React, { useCallback, useState } from "react";
 import {
-  Button,
-  TextField,
-  Checkbox,
-  Form,
-  FormLayout
+    Page,
+    Card,
+    Banner,
+    Button,
+    TextField,
+    Form,
+    FormLayout
 } from "@shopify/polaris";
-import { Redirect} from '@shopify/app-bridge/actions';
+import { Redirect } from '@shopify/app-bridge/actions';
 import { Context } from '@shopify/app-bridge-react';
+import FormOnSubmitExample from '../components/WK-edit-products'
 
-
-
-export default function FormOnSubmitExample() {
-  const [email, setDate] = useState("");
-  const [date, setTime] = useState("");
-  const app = Context;
-  
-
-  const handleSubmit = useCallback((_event) => {
-    setDate("");
-    setTime("");
-    redirectToHome();
-  }, []);
-  const redirectToHome = () => {
-    const redirect = Redirect.create(app);
-    redirect.dispatch(
-      Redirect.Action.APP,
-      '/',
-    );
-  };
-
-  const handleDateChange = useCallback((value) => setDate(value), []);
-  const handleTimeChange = useCallback((value) => setTime(value), []);
-  return (
-    <Form onSubmit={handleSubmit}>
-      <FormLayout>
-        <TextField
-          value={email}
-          onChange={handleDateChange}
-          label="Date"
-          type="date"
-        />
-        <TextField
-          value={date}
-          onChange={handleTimeChange}
-          label="Time"
-          type="time"
-        />
-
-        <Button submit>Submit</Button>
-      </FormLayout>
-    </Form>
-  );
+class EditProduct extends React.Component {
+    static contextType = Context;
+    state = { open: false };
+    render() {
+        const app = this.context;
+        const redirectToHome = () => {
+            const redirect = Redirect.create(app);
+            redirect.dispatch(
+                Redirect.Action.APP,
+                '/',
+            );
+        };
+        return (
+            <Page>
+                <Card>
+                    <Banner  title="Order archived">
+                    <Button onClick={redirectToHome}>Save</Button>
+                    </Banner>
+                </Card>
+                <FormOnSubmitExample>
+                </FormOnSubmitExample>
+                
+            </Page>
+        );
+    }
 }
+export default EditProduct;
