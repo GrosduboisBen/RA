@@ -8,7 +8,6 @@ class Index extends React.Component {
 
   state = { open: false };
   render() {
-    const emptyState = !store.get('ids');
     return (
       <Page>
         <Card>
