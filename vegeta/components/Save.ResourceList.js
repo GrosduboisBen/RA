@@ -1,11 +1,13 @@
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
 import {
+  Page,
+  Banner,
   Card,
   ResourceList,
   Stack,
   TextStyle,
-  Thumbnail,
+  Button,
 } from '@shopify/polaris';
 import store from 'store-js';
 import { Redirect} from '@shopify/app-bridge/actions';
@@ -28,15 +30,23 @@ class ResourceListWithLocations extends React.Component {
 
   render() {
     const app = this.context;
-    const redirectToProduct = () => {
+    const redirectToUpdate = () => {
       const redirect = Redirect.create(app);
       redirect.dispatch(
         Redirect.Action.APP,
         '/edit-products',
       );
     };
+      const redirectToCart = () => {
+        const redirect = Redirect.create(app);
+        redirect.dispatch(
+          Redirect.Action.APP,
+          '/cart-sample',
+        );
+    };
 
     return (
+      <Page>
       <Query query={GET_STOCK_BY_ID}>
         {({ data, loading, error }) => {
           if (loading) { return <div>Loading…</div>; }
@@ -57,7 +67,7 @@ class ResourceListWithLocations extends React.Component {
                       accessibilityLabel={`View details for ${item.node.name}`}
                       onClick={() => {
                         store.set('item', item); 
-                        redirectToProduct();  
+                        redirectToUpdate();  
                       }
                       }
                     >
@@ -74,10 +84,21 @@ class ResourceListWithLocations extends React.Component {
                   );
                 }}
               />
+              
             </Card>
+            
           );
         }}
+         
       </Query>
+      <Card  title="Show Cart Sample" 
+      sectioned subdued={true}
+      primaryFooterAction={{
+               content: 'Cart',
+               
+               onAction: () => redirectToCart()
+           }}/>
+           </Page>
     );
   }
 }

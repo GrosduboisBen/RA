@@ -1,35 +1,31 @@
 import gql from 'graphql-tag';
 import { Query } from 'react-apollo';
-import {
-  Card,
-  ResourceList,
-  Stack,
-  TextStyle,
-  Thumbnail,
-} from '@shopify/polaris';
+import { Card, DisplayText, ResourceList, Stack, TextStyle, } from '@shopify/polaris';
 import store from 'store-js';
-import { Redirect } from '@shopify/app-bridge/actions';
-import { Context } from '@shopify/app-bridge-react';
+import React, { useState } from "react";
+import DayPicker from "react-day-picker";
 
-import * as PropTypes from 'prop-types';
+import 'react-day-picker/lib/style.css';
 
-const GET_PRODUCTS_BY_ID = gql`
-  query getProducts($ids: [ID!]!) {
+const avai_dates = [
+  {id: "gid://shopify/Collection/237742620864", day: 2},
+  {id: "gid://shopify/Collection/237802062016", day: 4}
+]
+
+const GET_COLLECTION = gql`
+  query getCollection($ids: [ID!]!) {
     nodes(ids: $ids) {
       ... on Product {
-        title
-        handle
-        descriptionHtml
         id
-        images(first: 1) {
+        title
+        variants(first: 1){
           edges {
             node {
-              originalSrc
-              altText
+              price
             }
           }
         }
-        variants(first: 1) {
+        collections(first: 1) {
           edges {
             node {
               title
@@ -40,83 +36,103 @@ const GET_PRODUCTS_BY_ID = gql`
       }
     }
   }
-`;const GET_STOCK_BY_ID = gql`
-query getLocations($ids: [ID!]!){ 
-  nodes(ids: $ids){
-    ... on Location{
-      id
-      name
-    }
-  }
-}
 `;
 
-class ResourceListWithProducts extends React.Component {
-  static contextType = Context;
-
+class GetCollectionByProductID extends React.Component {
   render() {
-    const app = this.context;
-    const redirectToProduct = () => {
-      const redirect = Redirect.create(app);
-      redirect.dispatch(
-        Redirect.Action.APP,
-        '/edit-products',
-      );
-    };
-
     return (
-      <Query query={GET_PRODUCTS_BY_ID} variables={{ ids: store.get('ids') }}>
+      <Query query={GET_COLLECTION} variables={{ ids: store.get('p_ids') }}>
         {({ data, loading, error }) => {
-          if (loading) { return <div>Loading…</div>; }
-          if (error) { return <div>{error.message}</div>; }
-          console.log(data);
+          if (loading) return <div>Loading…</div>;
+          if (error) return <div>{error.message}</div>;
+
+          var products = new Array(data.nodes.length);
+          var i = 0;
+          var prod_name = null;
+          var coll_id = null;
+          var coll_name = null;
+          var prod_id = null;
+          var prod_price = null;
+
+          for (var line of data.nodes) {
+
+            prod_id = null;
+            prod_name = null;
+            prod_price = null;
+            coll_id = null;
+            coll_name = null;
+
+            prod_id = line.id;
+            prod_name = line.title;
+            for (var line3 of line.variants.edges) {
+              prod_price = line3.node.price;
+            }
+            for (var line2 of line.collections.edges) {
+              coll_id = line2.node.id;
+              coll_name = line2.node.title;
+              break;
+            }
+
+            products[i] = { prod_id, prod_name, prod_price, coll_id, coll_name };
+            i++;
+          }
+
+          store.set('prod_selected', products);
+
+          sortColl();
+          setDate();
+
+          store.set('p_ids', null);
+
+          var days = store.get('days');
+          for (var day of days) {
+            console.log(day);
+          }
+
+
           return (
+
+            <>
+
             <Card>
               <ResourceList
-                showHeader
-                resourceName={{ singular: 'Product', plural: 'Products' }}
-                items={data.nodes}
-                renderItem={(item) => {
-                  const media = (
-                    <Thumbnail
-                      source={
-                        item.images.edges[0]
-                          ? item.images.edges[0].node.originalSrc
-                          : ''
-                      }
-                      alt={
-                        item.images.edges[0]
-                          ? item.images.edges[0].node.altText
-                          : ''
-                      }
-                    />
-                  );
-                  const title = item.variants.edges[0].node.title;
+                resourceName={{ singular: 'Produit', plural: 'Produits' }}
+                items={products}
+                renderItem={item => {
+                  const price = item.prod_price;
                   return (
                     <ResourceList.Item
-                      id={item.id}
-                      media={media}
-                      accessibilityLabel={`View details for ${item.title}`}
-                      onClick={() => {
-                        store.set('item', item);
-                        redirectToProduct();
-                      }
-                      }
+                      id={item.prod_id}
                     >
                       <Stack>
                         <Stack.Item fill>
                           <h3>
                             <TextStyle variation="strong">
-                              {item.title}
+                              {item.prod_name}
                             </TextStyle>
                           </h3>
+                        </Stack.Item>
+                        <Stack.Item>
+                          <p>{price} €</p>
                         </Stack.Item>
                       </Stack>
                     </ResourceList.Item>
                   );
                 }}
               />
+
             </Card>
+
+            {days.map((day) =>
+              <DayPicker
+                onDayClick={ (data) => store.set('test', data) }
+                // modifiers={ {
+                //    disabled: { daysOfWeek: {day} },
+                // }}
+              />
+            )}
+
+            </>
           );
         }}
       </Query>
@@ -124,4 +140,56 @@ class ResourceListWithProducts extends React.Component {
   }
 }
 
-export default ResourceListWithProducts;
+ export default GetCollectionByProductID;
+
+ function sortColl() { //Tri les collections afin de ne pas avoir de doublon
+   var products = store.get('prod_selected');
+   var collections = new Array;
+   var id = products[0].coll_id;
+   var name = products[0].coll_name;
+   var exists = false;
+   var i = 1;
+
+   collections[0] = { id, name };
+
+   for (var line of products) {
+     exists = false;
+     for (var line2 of collections) {
+       if (line.coll_id == line2.id) {
+         exists = true;
+         break;
+       }
+     }
+     if (exists == false) {
+       id = line.coll_id;
+       name = line.coll_name;
+       collections[i] = { id, name };
+       i++;
+     }
+   }
+   store.set('coll_selected', collections);
+ }
+
+ function setDate() {
+   var tmp = new Array;
+   var selection = store.get('coll_selected');
+
+   var i = 0;
+   var toret = [0, 1, 2, 3, 4, 5, 6];
+   for (var tofind of avai_dates) {
+     for (var i = 0; i < 6; i++) {
+       for (var core of selection) {
+         if (tofind.id == core.id) {
+           if (toret[i] == tofind.day) {
+             toret[i]=null;
+             tmp[tmp.length] = toret;
+             toret = null;
+             toret = [0, 1, 2, 3, 4, 5, 6];
+             break;
+           }
+         }
+       }
+     }
+   }
+   store.set('days', tmp);
+ }
