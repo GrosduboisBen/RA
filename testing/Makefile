@@ -1,6 +1,6 @@
 CC_FLAGS = -W -Wall -Werror -Wextra -ansi
 
-CC = gcc -I ./include -o my_ls_a
+CC = gcc -I ./include -o my_ls
 
 NAME =	libmy.a
 
@@ -21,7 +21,7 @@ RAN = 	ranlib
 RM =	rm -f
 
 $(NAME) :	$(OBJ)
-		$(CC) $(OBJ)
+		$(CC) $(CC_FLAGS) $(OBJ)
 		ar r  $(NAME)
 		$(RAN) $(NAME)
 		mv $(NAME) ./lib

@@ -55,11 +55,12 @@ void l_opt_get_args(int argc, char **argv, char *currentDir);
 void a_opt_get_args(int argc, char **argv, char *currentDir);
 void r_opt_get_args(int argc, char **argv, char *currentDir);
 int my_strcmpv2(const char *s1, const char *s2);
-void my_swapv2(char **a, char **b);
-void find_two_first(char **array, int count);
 char *to_path(const char *s1, const char *s2);
 void my_swapv3(Informations *a, Informations *b);
 void sort_roots(Entry *roots);
+void show_link(Entry entry);
+void find_two_firstv2(Entry *roots);
+char *init_link(char *root, char *f_name, struct stat buf);
 
 void print_perm(struct stat buff);
 char *get_date(struct stat buff);

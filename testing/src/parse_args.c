@@ -56,24 +56,6 @@ char **get_routes(int argc, char **argv)
   }
   return routes;
 }
-/* Si pas d'arguments, on lit le répertoire courant, sinon le chemin en argument */
-/*void get_args(int argc, char **argv, char *currentDir)
-{
-  int i =0;
-    if (argc == 0) {               
-      show_content(currentDir);
-    } else {
-      if (argc == 1) {
-        show_content(argv[0]);
-      } else {
-        while (i < argc) {
-          show_content(argv[i]);
-          i++;
-          putchar('\n');
-        }
-      }
-    }
-} */
 
 char *to_path(const char *root, const char *filename)
 {
@@ -101,13 +83,20 @@ void l_opt_get_args(int argc, char **argv, char *currentDir)
     counter = count_content(currentDir);
 
     j = 0;
+    if (roots[0][j].file.filename[0] == 46)
+        {
+          j++;
+        }else{
     while (j < counter)
     {
       show_info_content(roots[0][j]);
       show_content(roots[0][j]);
+      show_link(roots[0][j]);
+      my_putchar('\n');
       j++;
     }
     j = 0;
+        }
   }
   else
   {
@@ -129,6 +118,8 @@ void l_opt_get_args(int argc, char **argv, char *currentDir)
         {
           show_info_content(roots[0][j]);
           show_content(roots[0][j]);
+          show_link(roots[0][j]);
+      my_putchar('\n');
           j++;
         }
       }
@@ -166,6 +157,7 @@ void get_args(int argc, char **argv, char *currentDir)
       }else
     {
       show_content(roots[0][j]);
+      my_putchar('\n');
       j++;
     }
     j = 0;
@@ -190,6 +182,7 @@ void get_args(int argc, char **argv, char *currentDir)
         {
 
           show_content(roots[0][j]);
+          my_putchar('\n');
           j++;
         }
       }
@@ -230,6 +223,7 @@ void r_opt_get_args(int argc, char **argv, char *currentDir)
       {
 
         show_content(roots[0][j]);
+        my_putchar('\n');
         j--;
       }
     }
@@ -255,6 +249,7 @@ void r_opt_get_args(int argc, char **argv, char *currentDir)
         {
 
           show_content(roots[0][j]);
+          my_putchar('\n');
           j--;
         }
       }
@@ -286,6 +281,7 @@ void a_opt_get_args(int argc, char **argv, char *currentDir)
       {
 
         show_content(roots[0][j]);
+        my_putchar('\n');
         j++;
       }
       j = 0;
@@ -304,6 +300,7 @@ void a_opt_get_args(int argc, char **argv, char *currentDir)
       {
 
         show_content(roots[0][j]);
+        my_putchar('\n');
         j++;
       }
       j = 0;
@@ -318,14 +315,3 @@ void a_opt_get_args(int argc, char **argv, char *currentDir)
     }
   }
 }
-/*while (i < argc) {
-          roots[i] = init_entry(argv[i]);
-          counter = count_content(argv[0]);
-          j=0;
-        while (j < counter){
-          
-          show_content(roots[i][j]);
-          j++;
-        }
-          i++;
-        }*/

@@ -50,14 +50,7 @@ int my_strcmpv2(const char *s1, const char *s2)
 
 }
 
-void my_swapv2(char **a, char **b) /* Permet d'échanger les adresses des strings rentrés en param. Le swap de contenu provoquait des pertes de données, on a donc décidé d'utiliser cette méthode*/
-{
-  char *tmp;
 
-  tmp = *a; /* on stock l'adresse de a dans tmp */
-  *a = *b;  /* on passe l'adresse de b dans a */
-  *b = tmp; /* on injecte l'adresse de a, qui se trouve dans tmp, dans b */
-}
 
 void my_swapv3(Informations *a, Informations *b)
 {
@@ -66,25 +59,6 @@ void my_swapv3(Informations *a, Informations *b)
   tmp = *a; /* on stock l'adresse de a dans tmp */
   *a = *b;  /* on passe l'adresse de b dans a */
   *b = tmp; /* on injecte l'adresse de a, qui se trouve dans tmp, dans b */
-}
-
-void find_two_first(char **array, int count) /* Permet d'isoler directement les 2 premiers répertoires (. et ..)*/
-{
-  int i = 0;
-
-  for (i = 0; i < count; i++) { /* On cherche . */
-    if (array[i][0] == '.' && array[i][1] == '\0') {
-      my_swapv2(&array[0], &array[i]); /* On swap */
-      break;
-    }
-  }
-
-  for (i = 1; i < count; i++) { /* On cherche .. */
-    if (array[i][0] == '.' && array[i][1] == '.' && array[i][2] == '\0') {
-      my_swapv2(&array[1], &array[i]); /* On swap */
-      break;
-    }
-  }
 }
 
 void find_two_firstv2(Entry *roots) /* Permet d'isoler directement les 2 premiers répertoires (. et ..)*/
