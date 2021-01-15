@@ -82,21 +82,18 @@ void l_opt_get_args(int argc, char **argv, char *currentDir)
     sort_roots(roots[0]);
     counter = count_content(currentDir);
 
-    j = 0;
-    if (roots[0][j].file.filename[0] == 46)
-        {
-          j++;
-        }else{
+    j = 2;
     while (j < counter)
     {
+
       show_info_content(roots[0][j]);
       show_content(roots[0][j]);
       show_link(roots[0][j]);
       my_putchar('\n');
       j++;
     }
+
     j = 0;
-        }
   }
   else
   {
@@ -119,7 +116,7 @@ void l_opt_get_args(int argc, char **argv, char *currentDir)
           show_info_content(roots[0][j]);
           show_content(roots[0][j]);
           show_link(roots[0][j]);
-      my_putchar('\n');
+          my_putchar('\n');
           j++;
         }
       }
@@ -151,15 +148,16 @@ void get_args(int argc, char **argv, char *currentDir)
 
     j = 0;
     while (j < counter)
-    if (roots[0][j].file.filename[0] == 46)
+      if (roots[0][j].file.filename[0] == 46)
       {
         j++;
-      }else
-    {
-      show_content(roots[0][j]);
-      my_putchar('\n');
-      j++;
-    }
+      }
+      else
+      {
+        show_content(roots[0][j]);
+        my_putchar('\n');
+        j++;
+      }
     j = 0;
   }
   else
@@ -276,15 +274,15 @@ void a_opt_get_args(int argc, char **argv, char *currentDir)
     roots[0] = init_entry(currentDir);
     sort_roots(roots[0]);
     counter = count_content(currentDir);
-      j = 0;
-      while (j < counter)
-      {
+    j = 0;
+    while (j < counter)
+    {
 
-        show_content(roots[0][j]);
-        my_putchar('\n');
-        j++;
-      }
-      j = 0;
+      show_content(roots[0][j]);
+      my_putchar('\n');
+      j++;
+    }
+    j = 0;
   }
   else
   {
