@@ -83,7 +83,7 @@ function encode_rle(string $str)
     $to_ret .= chr(0) . chr($size) . $new_temp;
   }
 
-  $to_ret = bin2hex($to_ret);
+  $to_ret = $to_ret;
 
   return $to_ret;             // on renvoie notre chaine compressée
 }
