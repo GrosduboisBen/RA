@@ -9,7 +9,7 @@ function check_encode(string $str)
   }
 }
 
-function encode_rle(string $str)
+function true_encode_rle(string $str)
 {
   $size = strlen($str);       // on récupère la taille de notre string
   $i = 1;
@@ -21,15 +21,40 @@ function encode_rle(string $str)
   {
     if ($str[$i] == $cur) {   // si le caractère actuel est le meme que celui recherché
       $let++;
-    } else {                  // sinon s'il est différent, on incrit $let et $cur dans $to_ret
+    } else {                  // sinon s'il est différent, on inscrit $let et $cur dans $to_ret
       $to_ret .= $let.$cur;
       $let = 1;               // puis on le remet à 1 et on récupère la lettre actuelle
       $cur = $str[$i];
     }
     $i++;
   }
-
+  
   $to_ret .= $let.$cur;     // on le fait une dernière fois pour récupérer le dernier caractère
+
+  return $to_ret;             // on renvoie notre chaine compressée
+}
+
+function encode_rle(string $str)
+{
+  $size = strlen($str);       // on récupère la taille de notre string
+  $i = 0;
+  $let = 1;                   // nombe d'occurence du caractère
+  $cur = $str[0];             // caractère à analyser
+  $to_ret = NULL;             // string à retourner
+
+  while ($i < $size)
+  {
+    if ($str[$i] == $cur) {   // si le caractère actuel est le meme que celui recherché
+      $let++;
+    } else {                  // sinon s'il est différent, on inscrit $let et $cur dans $to_ret
+      $to_ret .= bin2hex($let.$cur);
+      $let = 1;               // puis on le remet à 1 et on récupère la lettre actuelle
+      $cur = $str[$i];
+    }
+    $i++;
+  }
+  
+  $to_ret .= bin2hex($let.$cur);     // on le fait une dernière fois pour récupérer le dernier caractère
 
   return $to_ret;             // on renvoie notre chaine compressée
 }
