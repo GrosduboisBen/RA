@@ -46,7 +46,7 @@ function encode_rle(string $str)
 
   while ($i < $size) {
     
-    while ($str[$j] == $str[$i] && $j < $size-1) {
+    while ($str[$j] == $str[$i]) {
       $j++;
       $let++;
       $is_diff = 1;
@@ -83,7 +83,7 @@ function encode_rle(string $str)
     $to_ret .= chr(0) . chr($size) . $new_temp;
   }
 
-  $to_ret = $to_ret;
+  $to_ret = bin2hex($to_ret);
 
   return $to_ret;             // on renvoie notre chaine compressée
 }
