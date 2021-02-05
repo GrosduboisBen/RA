@@ -53,9 +53,9 @@ function encode_rle(string $str)
     }
 
     if ($let > 1) {
-      $temp .= dechex($let) . $str[$i];
+      $temp .= chr($let) . $str[$i];
     } else {
-      $temp .= dechex(0) . dechex(1) . $str[$i];
+      $temp .= chr(0) . chr(1) . $str[$i];
     }
     if ($let != 0 && $j != 0) {
        
@@ -80,7 +80,7 @@ function encode_rle(string $str)
       $new_temp .= $str[$i];
       $i++;
     }
-    $to_ret .= dechex(0) . dechex($size) . $new_temp;
+    $to_ret .= chr(0) . chr($size) . $new_temp;
   }
 
   $to_ret = ($to_ret);
