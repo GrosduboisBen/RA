@@ -46,14 +46,20 @@ function encode_rle(string $str)
 
   while ($i < $size) {
     
+    if ($j ==0 && $i !=1) {
+      $j = $i;
+    }
+
+    echo $j."\n";
+    echo $i."\n";
     while ($str[$j] == $str[$i]) {
       $j++;
       $let++;
-      $is_diff = 1;
     }
 
     if ($let > 1) {
       $temp .= chr($let) . $str[$i];
+      $is_diff = 1;
     } else {
       $temp .= chr(0) . chr(1) . $str[$i];
     }
