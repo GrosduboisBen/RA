@@ -52,7 +52,7 @@ function encode_rle(string $str)
       $is_diff = 1;
     }
 
-    if ($let > 0) {
+    if ($let > 1) {
       $temp .= dechex($let) . $str[$i];
     } else {
       $temp .= dechex(0) . dechex(1) . $str[$i];
