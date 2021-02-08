@@ -39,7 +39,7 @@ function check_syntax(string $str)
   return decode_rle($str);
 }
 
-function decode_rle(string $str)
+function true_decode_rle(string $str)
 {
   $size = strlen($str);
   $i = 1;
@@ -69,6 +69,36 @@ function decode_rle(string $str)
     }
   }
   return $to_ret;
+}
+
+function decode_rle(string $str)
+{
+  $size = strlen($str);
+  $i = 0;
+  $j = 0;
+  $is_num =0;
+  $temp =NULL;
+  $mult = 0;
+
+  while ($i < $size) {
+
+    if(ord($str[$i]) != 0){
+    if($is_num ==0){
+      $mult= ord($str[$i]);
+      $is_num =1;
+      } else{
+        while($j <= $mult){
+          $temp .= $str[$i];
+          $j++;
+        }
+        $j=0;
+        $mult=0;
+        $is_num=0;
+      }
+    }
+    $i++;
+    }
+  return $temp;
 }
 
 ?>

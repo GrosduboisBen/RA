@@ -9,6 +9,13 @@ function test_number($test)
   }
 }
 
+function decode_number($test)
+{
+  $new_char =ord($test);
+  return $new_char;
+
+}
+
 function test_letter($test)
 {
   if (ord($test) <= 90 && ord($test) >= 65) {
