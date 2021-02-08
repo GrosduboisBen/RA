@@ -2,6 +2,7 @@
 
 function check_encode(string $str)
 {
+  echo $str."\n";
   if (ctype_alpha($str)) {  // si la chaine est uniquement constituée de lettres, on lance la fonction encode_rle
     return encode_rle($str);
   } else {
@@ -47,7 +48,7 @@ function encode_rle(string $str)
   $is_diff = 0;           // caractère à analyser
   $to_ret = NULL;             // string à retourner
 
-  while ($i < $size) {              
+  while ($i < $size) {
     $diff_len = 1;                   
     if ($j == 0 && $i != 1) {
       $j = $i;
