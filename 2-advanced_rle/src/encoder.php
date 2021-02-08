@@ -2,7 +2,6 @@
 
 function check_encode(string $str)
 {
-  echo $str."\n";
   if (ctype_alpha($str)) {  // si la chaine est uniquement constituée de lettres, on lance la fonction encode_rle
     return encode_rle($str);
   } else {
@@ -37,59 +36,65 @@ function true_encode_rle(string $str)
 function encode_rle(string $str)
 {
   $size = strlen($str);       // on récupère la taille de notre string
-  $i = 1;
+  $i = 0;
   $j = 0;
   $let = 0;
   $k = 0;                     // nombe d'occurence du caractère
   $temp = NULL;
   $new_temp = NULL;
   $diff_len = 1;
-  $safe_count = 0;
   $is_diff = 0;           // caractère à analyser
   $to_ret = NULL;             // string à retourner
 
   while ($i < $size) {
-    $diff_len = 1;                   
-    if ($j == 0 && $i != 1) {
+    $diff_len = 1;
+    if ($j == 0 && $i == 1) {
       $j = $i;
     }
     while ($str[$j] == $str[$i]) {   // Tant que le caractère étudié est similaire au prochain
       $j++;
       $let++;
     }
-
     if ($let > 1) {
       $temp .= chr($let) . $str[$i];
       $is_diff = 1;
     } else {
-      $safe_count = $j;
-      $k = $j + 1;
-      if ($j != 0) {
-        while ($str[$k] != $str[$j]) {
-          $diff_len++;
-          $k++;
-          $j++;
-        }
-       }
+
+      if ($i == 1) {
+        $k = $i;
+      } else {
+        $k = $j + 1;
+      }
+
+      while ($str[$k] != $str[$j]) {
+        echo "k:" . $k . "\n";
+        echo "j:" . $k . "\n";
+        echo $diff_len . "\n";
+        $diff_len++;
+        $k++;
+        $j++;
+      }
+      echo "Sortie \n";
+      /*if($i == 1){
+        $diff_len++;
+      }*/
       $temp .= chr(0) . chr($diff_len);
-      if($i ==1){
-        $temp.=$str[0];
+      if ($i == 1) {
+        $temp .= $str[0];
       }
       while ($i < $j) {
         $temp .=  $str[$i];
         $i++;
       }
-      $j = $safe_count;
     }
     if ($let != 0 && $j != 0 && $k == 0) {
       if ($j > $size && $i < $size) {
         $i = $j;
         $let = 0;
-      } else if( $k !=0) {
-        $k= 0;
-        $let =0;
-      }
-       else {
+      } else if ($k != 0) {
+        $k = 0;
+        $let = 0;
+      } else {
         $i = $j;
         $let = 0;
       }
@@ -114,7 +119,7 @@ function encode_rle(string $str)
     $to_ret .= chr(0) . chr($size) . $new_temp;
   }
 
-  $to_ret = ($to_ret);
+  $to_ret = bin2hex($to_ret);
 
   return $to_ret;             // on renvoie notre chaine compressée
 }
