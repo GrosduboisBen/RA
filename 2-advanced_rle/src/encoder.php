@@ -54,6 +54,10 @@ function encode_rle(string $str)
     while ($str[$j] == $str[$i]) {   // Tant que le caractère étudié est similaire au prochain
       $j++;
       $let++;
+      if($let ==255){
+        $temp.= chr($let);
+        $let =0;
+      }
     }
     if ($let > 1) {
       $temp .= chr($let) . $str[$i];
@@ -65,20 +69,14 @@ function encode_rle(string $str)
       } else {
         $k = $j + 1;
       }
-
-      while ($str[$k] != $str[$j]) {
-        echo "k:" . $k . "\n";
-        echo "j:" . $k . "\n";
-        echo $diff_len . "\n";
+      $temp .= chr(0);
+      while ($str[$k] != $str[$j]) { 
         $diff_len++;
         $k++;
         $j++;
       }
-      echo "Sortie \n";
-      /*if($i == 1){
-        $diff_len++;
-      }*/
-      $temp .= chr(0) . chr($diff_len);
+     
+      $temp .= chr($diff_len);
       if ($i == 1) {
         $temp .= $str[0];
       }
