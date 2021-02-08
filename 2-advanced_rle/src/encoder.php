@@ -55,7 +55,7 @@ function encode_rle(string $str)
       $j++;
       $let++;
       if($let ==255){
-        $temp.= chr($let);
+        $temp.= chr($let).$str[$i];
         $let =0;
       }
     }
