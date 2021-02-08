@@ -38,21 +38,21 @@ function encode_rle(string $str)
   $size = strlen($str);       // on récupère la taille de notre string
   $i = 1;
   $j = 0;
-  $let = 0;                     // nombe d'occurence du caractère
+  $let = 0;
+  $k = 0;                     // nombe d'occurence du caractère
   $temp = NULL;
   $new_temp = NULL;
+  $diff_len = 1;
+  $safe_count = 0;
   $is_diff = 0;           // caractère à analyser
   $to_ret = NULL;             // string à retourner
 
-  while ($i < $size) {
-    
-    if ($j ==0 && $i !=1) {
+  while ($i < $size) {              
+    $diff_len = 1;                   
+    if ($j == 0 && $i != 1) {
       $j = $i;
     }
-
-    echo $j."\n";
-    echo $i."\n";
-    while ($str[$j] == $str[$i]) {
+    while ($str[$j] == $str[$i]) {   // Tant que le caractère étudié est similaire au prochain
       $j++;
       $let++;
     }
@@ -61,21 +61,45 @@ function encode_rle(string $str)
       $temp .= chr($let) . $str[$i];
       $is_diff = 1;
     } else {
-      $temp .= chr(0) . chr(1) . $str[$i];
-    }
-    if ($let != 0 && $j != 0) {
-       
-        if ($j > $size) {
-          $i = $j;
-          $let = 0;
-        } else {
-          $i = $j;
-          $let = 0;
+      $safe_count = $j;
+      $k = $j + 1;
+      if ($j != 0) {
+        while ($str[$k] != $str[$j]) {
+          $diff_len++;
+          $k++;
+          $j++;
         }
+       }
+      $temp .= chr(0) . chr($diff_len);
+      if($i ==1){
+        $temp.=$str[0];
+      }
+      while ($i < $j) {
+        $temp .=  $str[$i];
+        $i++;
+      }
+      $j = $safe_count;
+    }
+    if ($let != 0 && $j != 0 && $k == 0) {
+      if ($j > $size && $i < $size) {
+        $i = $j;
+        $let = 0;
+      } else if( $k !=0) {
+        $k= 0;
+        $let =0;
+      }
+       else {
+        $i = $j;
+        $let = 0;
+      }
     } else {
       $let = 0;
-      $i++;
+      if ($k != 0) {
+        $k = 0;
+        $i++;
+      }
     }
+    $k = 0;
   }
   if ($is_diff != 0) {
     $to_ret .= $temp;
