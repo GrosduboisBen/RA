@@ -84,10 +84,11 @@ function decode_rle(string $str)
 
     if(ord($str[$i]) != 0){
     if($is_num ==0){
+      
       $mult= ord($str[$i]);
       $is_num =1;
       } else{
-        while($j <= $mult){
+        while($j < $mult){
           $temp .= $str[$i];
           $j++;
         }
