@@ -33,6 +33,10 @@ function decode_advanced_rle(string $input_path, string $output_path)
 
   if (file_exists($input_path) == TRUE && file_exists($output_path) == FALSE) {
     $to_open = fopen($input_path,"r");
+    if(filesize($input_path) == 0){
+      fopen($output_path, "w+");
+      return 0;
+    }
     $str = fread($to_open, filesize($input_path));
     $size = strlen($str);
     /*while($i <= $size){
