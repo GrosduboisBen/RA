@@ -35,12 +35,12 @@ function decode_advanced_rle(string $input_path, string $output_path)
     $to_open = fopen($input_path,"r");
     $str = fread($to_open, filesize($input_path));
     $size = strlen($str);
-    while($i <= $size){
+    /*while($i <= $size){
       echo "hexa :".bin2hex($str[$i])."\n";
       echo "brut :".$str[$i]."\n";
       echo "bin :".ord($str[$i])."\n\n";
       $i++;
-    }
+    }*/
     $str = decode_rle($str);
     if($str != "$$$"){
     $to_print = fopen($output_path, "w+");
@@ -52,7 +52,6 @@ function decode_advanced_rle(string $input_path, string $output_path)
       return 1;
     }
   } else {
-
-    return 1;
+   return 1;
   }
 }

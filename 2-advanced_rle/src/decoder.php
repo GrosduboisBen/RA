@@ -77,29 +77,63 @@ function decode_rle(string $str)
   $i = 0;
   $j = 0;
   $is_num =0;
+  $is_diff_string =0;
   $temp =NULL;
   $mult = 0;
+  $set =0;
+  $curr =0;
 
   while ($i < $size) {
-
+    $curr =ord($str[$i]);
     if(ord($str[$i]) != 0){
-    if($is_num ==0){
-      
+    if($is_num == 0){
       $mult= ord($str[$i]);
       $is_num =1;
       } else{
-        while($j < $mult){
+        if($is_diff_string == 1){
+        while($j < $mult ){
+          
+          if(test_letter($str[$i])){
           $temp .= $str[$i];
+          }
+          $i++;
           $j++;
         }
         $j=0;
         $mult=0;
+        $is_diff_string =0;
+      } else{
+        $j = 0;
+        $i--;
+        
+        while($j < $mult){
+          echo "Printing :";
+          if($set ==0){
+            $i++;
+            }
+          
+          if(test_letter($str[$i])){
+          $temp .= $str[$i];
+          }
+          $j++;
+          $set =1;
+        }
+        $set =0;
+        $i--;
+        $j=0;
+        $mult=0;
         $is_num=0;
+        $is_diff_string =0;
       }
+      
+      }
+    } else{
+      $is_diff_string =1;
     }
     $i++;
     }
-  return $temp;
+    print_string($temp);
+  return ($temp);
 }
 
 ?>
