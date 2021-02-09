@@ -39,36 +39,23 @@ function check_syntax(string $str)
   return decode_rle($str);
 }
 
-function true_decode_rle(string $str)
+function decode_syntax(string $str)
 {
-  $size = strlen($str);
-  $i = 1;
-  $j = 0;
-  $mult = 0;
-  $to_ret = NULL;
-  $num = $str[0];
-
-  while ($i < $size) {
-    if (test_number($str[$i])) {
-      $num .= $str[$i];
-      $i++;
-    } else {
-      $mult = intval($num);
-
-      if ($mult > 10000000) {
-        return "$$$";
-      }
-      
-      while ($j < $mult) {
-        $to_ret .= $str[$i];
-        $j++;
-      }
-      $j = 0;
-      $num = NULL;
-      $i++;
+  $i =0;
+  $size= strlen($str);
+  $has_letter =0;
+  while($i <= $size){
+    if(test_letter($str[$i])){
+      $has_letter =1;
     }
+    $i++;
   }
-  return $to_ret;
+  if ($has_letter ==0){
+    print_string("has no letter");
+    return "$$$";
+  }else{
+    return decode_rle($str);
+  }
 }
 
 function decode_rle(string $str)

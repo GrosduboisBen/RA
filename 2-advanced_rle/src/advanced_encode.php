@@ -11,7 +11,7 @@ function encode_advanced_rle(string $input_path, string $output_path)
     }else {
     $str = fread($to_open, filesize($input_path));
     }
-    $str = check_encode($str);
+    $str = encode_rle($str);
     if($str != "$$$"){
     $to_print = fopen($output_path, "w+");
     fwrite($to_print, $str);
@@ -45,7 +45,7 @@ function decode_advanced_rle(string $input_path, string $output_path)
       echo "bin :".ord($str[$i])."\n\n";
       $i++;
     }*/
-    $str = decode_rle($str);
+    $str = decode_syntax($str);
     if($str != "$$$"){
     $to_print = fopen($output_path, "w+");
     fwrite($to_print, $str);
