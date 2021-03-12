@@ -32,6 +32,10 @@ class AuthenticatedSessionController extends Controller
         $validator = Validator::make(
             $request->all(),
             [
+                'name' => 'required',
+                'firstname' => 'required',
+                'username' => 'required',
+                'age' => 'required',
                 'email' => 'required',
                 'password' => 'required',
             ]
